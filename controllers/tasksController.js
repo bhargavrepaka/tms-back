@@ -26,7 +26,7 @@ export const fetchAllTasks = async (req, res) => {
 
 export const addTask = async (req, res) => {
     const task = req.body;
-    console.log(task)
+    //(task)
     try {
         if(req.user.role!=='admin'){
             return res.status(401).json({ message: "Not authorized" });
@@ -42,7 +42,7 @@ export const addTask = async (req, res) => {
 
 export const addComment = async (req, res) => {
     const comment = req.body;
-    console.log(comment)
+    //(comment)
     try {
         const newComment = await Comment.create(comment);
         const task=await Task.findOne({where:{id:newComment.TaskId}})
@@ -62,8 +62,8 @@ export const addComment = async (req, res) => {
 
 export const updateTask = async (req, res) => {
     const { tid } = req.params;
-    console.log(tid);
-    console.log(req.body);
+    //(tid);
+    //(req.body);
     try {
         const updatedTask = await Task.findOne({ where: { id:tid }});
         const newTask=await updatedTask.update(req.body);

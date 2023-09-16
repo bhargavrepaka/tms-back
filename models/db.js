@@ -14,7 +14,7 @@ export const sequelize = new Sequelize(
 )
 
 sequelize.authenticate().then(() => {
-   console.log('MYSQL DB Connection has been established successfully.');
+   //('MYSQL DB Connection has been established successfully.');
 }).catch((error) => {
    console.error('Unable to connect to the MYSQL database: ', error);
 });

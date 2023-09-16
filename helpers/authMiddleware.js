@@ -14,7 +14,7 @@ export const isAuth =async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        console.log(error);
+        //(error);
         res.status(400).json({ message: "Token is not valid" });
     }
 }

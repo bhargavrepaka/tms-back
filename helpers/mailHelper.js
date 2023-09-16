@@ -61,7 +61,7 @@ export const sendMail=async (messageFor,mailReceiver,mailText,sender)=>{
         const result = await transporter.sendMail(mailObject)
         return Promise.resolve(result)
       } catch (error) {
-        console.log("error from mail helper",error)
+        //("error from mail helper",error)
         return Promise.reject(error)
       }
 }

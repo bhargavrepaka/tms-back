@@ -44,11 +44,11 @@ Comment.belongsTo(Task,{
 })
 
 sequelize.sync({ force: false}).then(() => {
-    console.log(` ALL Database & tables created!`)
+    //(` ALL Database & tables created!`)
 }).catch((error) => {
-    console.log(`Error creating tables: ${error}`)
+    //(`Error creating tables: ${error}`)
 })
 
 app.listen(process.env.PORT, () => {
-    console.log("Server is running on port "+process.env.PORT)
+    //("Server is running on port "+process.env.PORT)
 })
