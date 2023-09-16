@@ -36,9 +36,11 @@ app.use("/users",UserRoute)
 
 Task.hasMany(Comment,{
     as:'comment',
+    foreignKey:'TaskId'
 })
 Comment.belongsTo(Task,{
    as:'task', 
+   foreignKey:'TaskId'
 })
 
 sequelize.sync({ force: true}).then(() => {
