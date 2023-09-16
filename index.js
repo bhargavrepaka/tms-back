@@ -8,7 +8,8 @@ import cors from "cors"
 import morgan from "morgan"
 import cookieParser from "cookie-parser"
 import dotenv from "dotenv"
-
+import { Task } from "./models/TasksModel.js"
+import { Comment } from "./models/CommentsModel.js"
 
 const app = express()
 
@@ -32,7 +33,15 @@ app.use("/auth",AuthRoute)
 app.use("/users",UserRoute)
 
 //listen events
-sequelize.sync({ force: false }).then(() => {
+
+Task.hasMany(Comment,{
+    as:'comment',
+})
+Comment.belongsTo(Task,{
+   as:'task', 
+})
+
+sequelize.sync({ force: false}).then(() => {
     console.log(` ALL Database & tables created!`)
 }).catch((error) => {
     console.log(`Error creating tables: ${error}`)

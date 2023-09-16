@@ -4,8 +4,8 @@ import nodemailer from 'nodemailer'
 let config = {
     service : 'gmail',
     auth : {
-        user: 'lookoutknowledge@gmail.com',
-        pass: 'rjpxtjowrzqlbein'
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS
     }
 }
 
@@ -35,6 +35,14 @@ export const sendMail=async (messageFor,mailReceiver,mailText,sender)=>{
         text: mailText, // plain text body
         html:`<h1>${mailText}</h1>`, // html body
       }
+
+      let messageForNewComment = {
+        from: 'nomoreterminate@gmail.com', // sender address
+        to: mailReceiver, // list of receivers
+        subject: `New comment on  task` , // Subject line
+        text: mailText, // plain text body
+        html:`<h1>${mailText}</h1>`, // html body
+      }
       let mailObject=null
       if(messageFor==="newtask"){
         mailObject=messageForNewTask
@@ -44,6 +52,9 @@ export const sendMail=async (messageFor,mailReceiver,mailText,sender)=>{
         }
       else if(messageFor==="roleupdate"){
             mailObject=messageForUserRoleChange
+        }
+        else{
+            mailObject=messageForNewComment
         }
 
       try {

@@ -1,4 +1,5 @@
 import { sendMail } from "../helpers/mailHelper.js";
+import { Comment } from "../models/CommentsModel.js";
 import { Task } from "../models/TasksModel.js";
 
 //only if admin
@@ -7,7 +8,11 @@ export const fetchAllTasks = async (req, res) => {
         if(req.user.role!=='admin'){
             return res.status(401).json({ message: "Not authorized" });
         }
-        const tasks = await Task.findAll();
+        const tasks = await Task.findAll({
+            include:[{
+                model:Comment,
+                as:'comment'
+            }]});
         const assignedTasks = tasks.filter(task => task.status === "assigned")
         const doneTasks = tasks.filter(task => task.status === "done")
         const inprogress = tasks.filter(task => task.status === "inprogress")
@@ -35,6 +40,26 @@ export const addTask = async (req, res) => {
     }
 }
 
+export const addComment = async (req, res) => {
+    const comment = req.body;
+    console.log(comment)
+    try {
+        const newComment = await Comment.create(comment);
+        const task=await Task.findOne({where:{id:newComment.TaskId}})
+        const mailText=`There's a new comment on task with id '${newComment.TaskId}' Please check in the dashboard for more details.`
+        if(newComment.senderRole==='admin'){
+            sendMail("newComment",task.assignedTo,mailText,task.assignedBy)
+        }
+        else{
+            sendMail("newComment",task.assignedBy,mailText,task.assignedTo)
+        }
+
+        return res.status(201).json(newComment);
+    } catch (error) {
+        return res.status(409).json({ message: error.message });
+    }
+}
+
 export const updateTask = async (req, res) => {
     const { tid } = req.params;
     console.log(tid);
@@ -53,7 +78,11 @@ export const updateTask = async (req, res) => {
 
 export const fetchUserTasks = async (req, res) => {
     try {
-        const tasks = await Task.findAll({ where: { assignedTo:req.user.email } });
+        const tasks = await Task.findAll({ where: { assignedTo:req.user.email },
+            include:[{
+                model:Comment,
+                as:'comment'
+            }]} );
         const assignedTasks = tasks.filter(task => task.status === "assigned")
         const doneTasks = tasks.filter(task => task.status === "done")
         const inprogress = tasks.filter(task => task.status === "inprogress")
