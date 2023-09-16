@@ -43,7 +43,7 @@ Comment.belongsTo(Task,{
    foreignKey:'TaskId'
 })
 
-sequelize.sync({ force: true}).then(() => {
+sequelize.sync({ force: false}).then(() => {
     console.log(` ALL Database & tables created!`)
 }).catch((error) => {
     console.log(`Error creating tables: ${error}`)
