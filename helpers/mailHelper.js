@@ -4,8 +4,8 @@ import nodemailer from 'nodemailer'
 let config = {
     service : 'gmail',
     auth : {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS
+        user:"lookoutknowledge@gmail.com",
+        pass: "rjpxtjowrzqlbein"
     }
 }
 
