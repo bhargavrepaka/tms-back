@@ -65,7 +65,10 @@ export const updateTask = async (req, res) => {
     //(tid);
     //(req.body);
     try {
-        const updatedTask = await Task.findOne({ where: { id:tid }});
+        const updatedTask = await Task.findOne({ where: { id:tid },include:[{
+            model:Comment,
+            as:'comment'
+        }]});
         const newTask=await updatedTask.update(req.body);
         const mailText=`The task ${newTask.id} is updated by ${req.user.email}. Please check in the dashboard for more details.`
         const mailReceiver= req.user.role==='admin'?newTask.assignedTo:newTask.assignedBy 
